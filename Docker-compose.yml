@@ -1,0 +1,84 @@
+#version: '3.8'
+#
+#services:
+#  mysql-db:
+#    image: mysql:8.3
+#    container_name: mysql-db
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: Pooja@1234
+#      MYSQL_DATABASE: javatechie
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+#    networks:
+#      - product-network
+#
+#  product-service:
+#    image: javatechie/product-service:v1.0.0
+#    container_name: product-service
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - mysql-db
+#    environment:
+#      DB_HOST: mysql-db
+#      DB_PORT: 3306
+#      DB_NAME: javatechie
+#      DB_USERNAME: root
+#      DB_PASSWORD: Pooja@1234
+#    networks:
+#      - product-network
+#
+#volumes:
+#  mysql-data:
+#
+#networks:
+#  product-network:
+#    driver: bridge
+
+
+
+services:
+  mysql-db:
+    image: mysql:8.3
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - product-network
+
+  product-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: javatechie/product-service:v1.0.0
+    container_name: product-service
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - product-network
+
+volumes:
+  mysql-data:
+
+networks:
+  product-network:
+    driver: bridge
