@@ -62,10 +62,7 @@ git push --tags
 
 See CHANGELOG.md for version history.
 
-🔢 Local Testing
 
-docker run -p 8080:8080 pooja06bhosale/product-service:v1.0.0
-curl http://localhost:8080/health
 
 📃 Endpoints Summary
 
